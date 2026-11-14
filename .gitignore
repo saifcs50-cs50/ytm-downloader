@@ -1,0 +1,14 @@
+# Private virtualenv that ytm.py creates on first run
+.venv/
+__pycache__/
+
+# Output of windows/package.sh
+*.zip
+
+# Tools the Windows script downloads on first run (yt-dlp.exe, ffmpeg.exe, ...): never commit these
+windows/tools/
+
+.env
+.env.*
+*.log
+.DS_Store
