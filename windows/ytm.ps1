@@ -74,7 +74,7 @@ $ExitOk = 0
 $ExitFailed = 1
 $script:ExitCode = $ExitFailed
 
-# --- Links ----------------------------------------------------------------------------
+# Links
 
 function Get-QueryValue([string]$Query, [string]$Key) {
     foreach ($pair in $Query.TrimStart('?').Split('&')) {
@@ -140,7 +140,7 @@ function Select-Link([string]$Argument) {
     }
 }
 
-# --- Folders --------------------------------------------------------------------------
+# Folders
 
 function Get-SafeFolderName([string]$Title) {
     $cleaned = ($Title -replace $UnsafeNamePattern, '-').Trim().TrimStart('. ')
@@ -177,7 +177,7 @@ function Open-Folder([string]$Folder) {
     Invoke-Item -LiteralPath $Folder
 }
 
-# --- yt-dlp arguments -----------------------------------------------------------------
+# yt-dlp arguments
 
 function Get-CookieArguments([string]$Browser) {
     if ($Browser) { return @('--cookies-from-browser', $Browser) }
@@ -214,7 +214,7 @@ function Get-DownloadArguments($Link, [string]$AudioFormat, [string]$Browser = '
     ) + $playlistArguments + @(Get-CookieArguments $Browser) + @($ExtraArguments) + @('--', $Link.Url)
 }
 
-# --- Tools (yt-dlp, FFmpeg, Deno) -----------------------------------------------------
+# Tools (yt-dlp, FFmpeg, Deno)
 
 function Test-UpdateDue([string]$Marker, [datetime]$Now) {
     if (-not (Test-Path -LiteralPath $Marker)) { return $true }
@@ -289,7 +289,7 @@ function Update-Engine([switch]$Force) {
     else { Write-Host '  Update failed (offline?). Carrying on with the installed version.' }
 }
 
-# --- Download -------------------------------------------------------------------------
+# Download
 
 function Get-PlaylistSummary($Link, [string]$Browser) {
     if (-not $Link.PlaylistId) {

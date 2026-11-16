@@ -39,7 +39,7 @@ function Assert-Throws([scriptblock]$Body, [string]$Pattern = '.') {
 
 $Playlist = 'https://music.youtube.com/playlist?list=PLabc12345678'
 
-# --- ConvertTo-Link -----------------------------------------------------------------
+# ConvertTo-Link
 
 Test-Case 'keeps only the list id from a YouTube Music playlist link' {
     $link = ConvertTo-Link 'https://music.youtube.com/playlist?list=PLabc123_-x&si=tracking'
@@ -111,7 +111,7 @@ Test-Case 'option-like ids only ever appear inside a YouTube Music url' {
     Assert-True ($link.Url.StartsWith('https://music.youtube.com/'))
 }
 
-# --- Get-SafeFolderName -------------------------------------------------------------
+# Get-SafeFolderName
 
 Test-Case 'replaces characters Windows does not allow in folder names' {
     Assert-Equal (Get-SafeFolderName 'Rock/Pop: Best | "Hits" <2024>?*') 'Rock-Pop- Best - -Hits- -2024---'
@@ -158,7 +158,7 @@ Test-Case 'hostile titles stay a single folder inside the music folder' {
     }
 }
 
-# --- Get-DownloadArguments ----------------------------------------------------------
+# Get-DownloadArguments
 
 $PlaylistLink = ConvertTo-Link $Playlist
 $SongLink = ConvertTo-Link 'https://music.youtube.com/watch?v=dQw4w9WgXcQ'
@@ -233,7 +233,7 @@ Test-Case 'the summary query also ends with the terminator and the link' {
     Assert-Equal ($arguments[-2..-1] -join ' ') "-- $($PlaylistLink.Url)"
 }
 
-# --- ConvertTo-Summary --------------------------------------------------------------
+# ConvertTo-Summary
 
 Test-Case 'reads the song count and title from the summary line' {
     $summary = ConvertTo-Summary '89 "Road Trip"'
@@ -261,7 +261,7 @@ Test-Case 'rejects an empty or unreadable summary' {
     Assert-Throws { ConvertTo-Summary 'something unexpected' }
 }
 
-# --- Test-UpdateDue -----------------------------------------------------------------
+# Test-UpdateDue
 
 $Scratch = Join-Path ([IO.Path]::GetTempPath()) ("ytm-tests-" + [Guid]::NewGuid().ToString('N'))
 [IO.Directory]::CreateDirectory($Scratch) | Out-Null
@@ -283,7 +283,7 @@ try {
         Assert-True (Test-UpdateDue -Marker $marker -Now $written.AddDays($UpdateIntervalDays + 1))
     }
 
-    # --- Get-SongCount --------------------------------------------------------------
+    # Get-SongCount
 
     Test-Case 'counts audio files and ignores partial and hidden files' {
         $folder = Join-Path $Scratch 'songs [mix]'
@@ -294,7 +294,7 @@ try {
         Assert-Equal (Get-SongCount $folder) 2
     }
 
-    # --- Expand-ToolArchive ---------------------------------------------------------
+    # Expand-ToolArchive
 
     Test-Case 'pulls the named programs out of a nested zip and cleans up' {
         $source = Join-Path $Scratch 'ffmpeg-build'
@@ -325,7 +325,7 @@ try {
     Remove-Item -LiteralPath $Scratch -Recurse -Force
 }
 
-# --- Select-Link (clipboard and prompt are replaced with stand-ins) -------------------
+# Select-Link (clipboard and prompt are replaced with stand-ins)
 
 Test-Case 'prefers the link given on the command line' {
     function Read-ClipboardText { throw 'clipboard must not be read' }
@@ -348,7 +348,7 @@ Test-Case 'asks until a valid link is typed when the clipboard is unrelated' {
     Assert-Equal $script:Answers.Count 0
 }
 
-# --- The shipped files must survive Windows PowerShell 5.1 and cmd.exe ----------------
+# The shipped files must survive Windows PowerShell 5.1 and cmd.exe
 
 Test-Case 'shipped scripts are plain ASCII (5.1 reads files without a BOM as ANSI)' {
     foreach ($file in Get-ChildItem -LiteralPath $PSScriptRoot -File | Where-Object { $_.Extension -in '.ps1', '.bat', '.txt' }) {
